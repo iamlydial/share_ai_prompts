@@ -1,4 +1,3 @@
-import { errorMonitor } from "events";
 import mongoose from "mongoose";
 
 let isConnected = false;
@@ -19,8 +18,9 @@ export const connectToDB = async () => {
     });
 
     isConnected = true;
-    console.log("mongodb connected");
+    console.log("MongoDB connected successfully");
   } catch (error) {
-    console.log(error);
+    console.error("Failed to connect to MongoDB:", error);
+    throw new Error("Database connection failed");
   }
 };
