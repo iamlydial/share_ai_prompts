@@ -17,10 +17,9 @@ export const connectToDB = async () => {
       useUnifiedTopology: true,
     });
 
-    isConnected = true;
-    console.log("MongoDB connected successfully");
+    isConnected = true; 
+    console.log("mongodb connected")
   } catch (error) {
-    console.error("Failed to connect to MongoDB:", error);
-    throw new Error("Database connection failed");
+    console.log(error)
   }
 };
