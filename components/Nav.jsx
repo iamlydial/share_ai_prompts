@@ -47,6 +47,7 @@ const Nav = () => {
                 src="/assets/images/logo.svg"
                 width={37}
                 height={37}
+                alt="profile"
                 className="rounded-full"
               />
             </Link>
@@ -101,7 +102,9 @@ const Nav = () => {
                       signOut();
                     }}
                     className="mt-5 w-full black_btn"
-                  >Create Prompt</button>
+                  >
+                    Create Prompt
+                  </button>
                 </Link>
               </div>
             )}
