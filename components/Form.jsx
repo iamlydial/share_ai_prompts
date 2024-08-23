@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const Form = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+  return <div></div>;
+};
 
-export default Form
+export default Form;
