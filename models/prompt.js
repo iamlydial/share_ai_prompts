@@ -1,4 +1,4 @@
-import { Schema, model, model } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 const PromptSchema = new Schema({
   creator: {
