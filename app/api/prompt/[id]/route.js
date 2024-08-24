@@ -4,6 +4,7 @@ import Prompt from "../../../../models/prompt";
 
 export const GET = async (request, { params }) => {
   try {
+    await connectToDB();
     console.log("connected to DB");
     const prompt = await Prompt.findById(params.id).populate("creator");
 
@@ -45,3 +46,16 @@ export const PATCH = async (request, { params }) => {
 };
 
 //delete
+export const DELETE = async (request, { params }) => {
+  try {
+    await connectToDB();
+
+    await Prompt.findByIdAndDelete(params.id);
+
+    return new Response("Prompt deleted successfullt", { status: 200 });
+  } catch (error) {
+    return new Response("Failed to delete the prompt", {
+      status: 500,
+    });
+  }
+};
