@@ -3,41 +3,53 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Profile from "../../components/Profile";
+import { useRouter } from "next/navigation";
 
 const MyProfile = () => {
-  const { data: session, status } = useSession();  // Include status to check if session is loading
+  const router = useRouter();
+  const { data: session } = useSession();
+
   const [myPosts, setMyPosts] = useState([]);
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
-
   useEffect(() => {
-    // Check if session is still loading or if user ID is not available
-    if (status === "loading" || !session?.user.id) {
-      console.log("Session is loading or user ID not found");
-      return;
-    }
-
     const fetchPosts = async () => {
-      try {
-        const response = await fetch(`/api/users/${session.user.id}/posts`);
-        const data = await response.json();
-        console.log("Fetched posts data:", data);
-        setMyPosts(data);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
+      const response = await fetch(`/api/users/${session?.user.id}/posts`);
+      const data = await response.json();
+
+      setMyPosts(data);
     };
 
-    fetchPosts();
-  }, [session, status]);  // Depend on session and status
+    if (session?.user.id) fetchPosts();
+  }, [session?.user.id]);
 
-  console.log("myPosts state:", myPosts);
+  const handleEdit = (post) => {
+    router.push(`/update-prompt?id=${post._id}`);
+  };
+
+  const handleDelete = async (post) => {
+    const hasConfirmed = confirm(
+      "Are you sure you want to delete this prompt?"
+    );
+
+    if (hasConfirmed) {
+      try {
+        await fetch(`/api/prompt/${post._id.toString()}`, {
+          method: "DELETE",
+        });
+
+        const filteredPosts = myPosts.filter((item) => item._id !== post._id);
+
+        setMyPosts(filteredPosts);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <Profile
-      name="My profile"
-      desc="Welcome to Your Personalized Profile Page"
+      name='My'
+      desc='Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination'
       data={myPosts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}

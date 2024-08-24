@@ -13,16 +13,12 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
 
   const [copied, setCopied] = useState("");
 
-  console.log("Post Object:", post);
-  console.log("Post Creator:", post.creator);
-  console.log("Image URL:", post.creator?.image);
-
   const handleProfileClick = () => {
-    console.log(post, "post!");
+    console.log(post);
 
-    if (post.creator.id === session?.user.id) return router.push("/profile");
+    if (post.creator._id === session?.user.id) return router.push("/profile");
 
-    router.push(`/profile/${post.creator.id}?name=${post.creator.username}`);
+    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
   };
 
   console.log("Image URL:", post.creator?.image);
@@ -32,6 +28,11 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
     navigator.clipboard.writeText(post.prompt);
     setTimeout(() => setCopied(false), 3000);
   };
+
+  // Debugging logs
+  console.log("session.user.id:", session?.user.id);
+  console.log("post.creator._id:", post.creator?._id);
+  console.log("pathName:", pathName);
 
   return (
     <div className="prompt_card">
@@ -80,22 +81,24 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
         {post.tag}
       </p>
 
-      {session?.user.id === post.creator?.id && pathName === "/profile" && (
-        <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-          <p
-            className="font-inter text-sm green_gradient cursor-pointer"
-            onClick={handleEdit}
-          >
-            Edit
-          </p>
-          <p
-            className="font-inter text-sm orange_gradient cursor-pointer"
-            onClick={handleDelete}
-          >
-            Delete
-          </p>
-        </div>
-      )}
+      {/* Conditional rendering with debug log */}
+      {String(session?.user.id) === String(post.creator?._id) &&
+        pathName === "/profile" && (
+          <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+            <p
+              className="font-inter text-sm green_gradient cursor-pointer"
+              onClick={handleEdit}
+            >
+              Edit
+            </p>
+            <p
+              className="font-inter text-sm orange_gradient cursor-pointer"
+              onClick={handleDelete}
+            >
+              Delete
+            </p>
+          </div>
+        )}
     </div>
   );
 };
